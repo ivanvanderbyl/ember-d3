@@ -1,25 +1,17 @@
-# Ember-d3
+# ember-d3
 
-This README outlines the details of collaborating on this Ember addon.
+An [Ember CLI](http://www.ember-cli.com/) addon that installs [d3](http://d3js.org/) in your Ember app and provides an ES2015 module shim for it.
 
-## Installation
+## Usage
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+Install the addon:
 
-## Running
+```
+ember install ember-d3
+```
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+Use it!
 
-## Running Tests
-
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+```js
+import d3 from 'd3';
+```

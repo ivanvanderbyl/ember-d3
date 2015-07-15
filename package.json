@@ -1,7 +1,7 @@
 {
   "name": "ember-d3",
   "version": "0.0.0",
-  "description": "Ember CLI addon to include D3 as an ES6 module in your app.",
+  "description": "Ember CLI addon to include D3 as an ES2015 module in your app.",
   "directories": {
     "doc": "doc",
     "test": "tests"
