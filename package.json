@@ -1,7 +1,7 @@
 {
   "name": "ember-d3",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Ember CLI addon to include D3 as an ES6 module in your app.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,11 @@
     "build": "ember build",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/brzpegasus/ember-d3",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Estelle DeBlois",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
@@ -37,7 +37,8 @@
     "ember-try": "0.0.6"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "d3"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.0.0"
