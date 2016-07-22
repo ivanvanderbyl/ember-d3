@@ -7,20 +7,20 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
     "build": "ember build",
-    "test": "ember try:testall"
+    "start": "ember server",
+    "test": "ember try:each"
   },
   "repository": "https://github.com/brzpegasus/ember-d3",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12"
   },
-  "author": "Estelle DeBlois",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
-    "ember-ajax": "~2.3.2",
-    "ember-cli": "2.5.0",
+    "ember-ajax": "^2.0.1",
+    "ember-cli": "2.6.3",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-htmlbars": "^1.0.5",
@@ -32,11 +32,10 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.0",
-    "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
-    "ember-try": "^0.2.2",
+    "ember-welcome-page": "^1.0.1",
     "loader.js": "^4.0.1"
   },
   "keywords": [
