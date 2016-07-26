@@ -10,13 +10,10 @@ module.exports = {
     this._super.included(app);
     if (process.env.EMBER_CLI_FASTBOOT !== 'true') {
 
-      // Fix for loading it in addons/engines
-      if (typeof app.import !== 'function' && app.app) {
-        app = app.app;
-      }
+      var bowerDirectory = app.bowerDirectory || 'bower_components';
 
-      app.import(app.bowerDirectory + '/d3/d3.js');
-      app.import('vendor/ember-d3/ember-d3-shim.js', {
+      this.import(bowerDirectory + '/d3/d3.js');
+      this.import('vendor/ember-d3/ember-d3-shim.js', {
         exports: {
           d3: ['default']
         }
