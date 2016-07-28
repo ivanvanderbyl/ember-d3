@@ -43,6 +43,8 @@ module.exports = {
     this._super.included && this._super.included.apply(this, arguments);
     this.app = app;
 
+    this.ui.writeWarn('[ember-cli-d3-shape] skipping included hook for', app.name || 'app');
+
     while (app.app) {
       app = app.app;
     }
@@ -57,9 +59,7 @@ module.exports = {
     // This essentially means we'll skip importing this package twice, if it's
     // a dependency of another package.
     if (!app.import) {
-      if (this.isDevelopingAddon()) {
-        console.log('[ember-cli-d3-shape] skipping included hook for', app.name);
-      }
+      this.ui.writeWarning('[ember-cli-d3-shape] skipping included hook for', app.name || 'app');
 
       return;
     }
