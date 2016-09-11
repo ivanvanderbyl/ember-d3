@@ -16,6 +16,10 @@
     "node": ">= 0.12"
   },
   "author": "Estelle DeBlois",
+  "contributors": [
+    "Ivan Vanderbyl",
+    "Mike North"
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
