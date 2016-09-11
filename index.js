@@ -1,5 +1,4 @@
 /* jshint node: true */
-/* jshint esnext: false */
 'use strict';
 
 var Funnel = require('broccoli-funnel');
@@ -7,28 +6,27 @@ var mergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 var rename = require('broccoli-stew').rename;
 var AMDDefineFilter = require('./lib/amd-define-filter');
-var fs = require('fs');
-
-function lookupPackage(packageName) {
-  var modulePath = require.resolve(packageName);
-  var i = modulePath.lastIndexOf(path.sep + 'build');
-  return modulePath.slice(0, i);
-}
+var d3DepsForPackage = require('./lib/d3-deps-for-package');
+var pathToD3Source = require('./lib/path-to-d3-module-src');
+var inclusionFilter = require('./lib/inclusion-filter');
+var exclusionFilter = require('./lib/exclusion-filter');
 
 module.exports = {
-  name: 'ember-d3',
-
   isDevelopingAddon: function () {
     return false;
   },
 
-  d3Modules: [
-
-    // Imported from package.json
-  ],
+  name: 'ember-cli-d3-shape',
 
   /**
-   * `import()` taken from ember-cli 2.7 to allow nested addon usage.
+   * Array of d3 packages to load
+   *
+   * @type {Array<String>}
+   */
+  d3Modules: [],
+
+  /**
+   * `import()` taken from ember-cli 2.7
    */
   import: function (asset, options) {
     var app = this.app;
@@ -43,73 +41,73 @@ module.exports = {
     this._super.included && this._super.included.apply(this, arguments);
     this.app = app;
 
-    this.ui.writeWarn('[ember-cli-d3-shape] skipping included hook for', app.name || 'app');
-
     while (app.app) {
       app = app.app;
     }
 
-    var pkg = require(path.join(lookupPackage('d3'), 'package.json'));
+    /*
+      Find all dependencies of `d3`
+     */
+    var config = app.project.config(app.env) || {};
+    var addonConfig = config[this.name] || {};
+    this.d3Modules = this.getD3Modules(addonConfig);
 
-    // Find all dependencies of `d3`
-    this.d3Modules = Object.keys(pkg.dependencies).filter(function (name) {
-      return /^d3\-/.test(name);
-    });
-
-    // This essentially means we'll skip importing this package twice, if it's
-    // a dependency of another package.
+    /*
+      This essentially means we'll skip importing this package twice, if it's
+      a dependency of another package.
+     */
     if (!app.import) {
-      this.ui.writeWarning('[ember-cli-d3-shape] skipping included hook for', app.name || 'app');
+      if (this.isDevelopingAddon()) {
+        console.log('[ember-cli-d3-shape] skipping included hook for', app.name);
+      }
 
       return;
     }
 
+    /*
+      Actually import the vendor tree packages to our app.
+     */
     var _this = this;
     this.d3Modules.forEach(function (packageName) {
       _this.import(path.join('vendor', packageName, packageName + '.js'));
     });
   },
 
-  treeForApp() {
-    return null;
+  getD3Modules(config) {
+    var allModules = this._getAllD3Modules();
+    var onlyModules = config.only || [];
+    var exceptModules = config.except || [];
+
+    return allModules
+      .filter(inclusionFilter(onlyModules))
+      .filter(exclusionFilter(exceptModules));
   },
 
-  treeForAddon() {
-    return null;
+  _getAllD3Modules() {
+    return d3DepsForPackage('d3');
   },
 
-  treeForVendor: function () {
+  treeForVendor: function (tree) {
     var trees = [];
-    var d3PackagePath = lookupPackage('d3');
 
-    this.d3Modules.forEach(function (packageName) {
-      // Import existing builds from node d3 packages, which are UMD packaged.
-      var packageBuildPath = path.join('build', packageName + '.js');
+    if (tree) {
+      trees.push(tree);
+    }
 
-      var d3PathToSrc = path.join(d3PackagePath, 'node_modules', packageName);
-
-      try {
-        fs.statSync(path.join(d3PathToSrc)).isDirectory();
-      } catch (err) {
-        d3PathToSrc = lookupPackage(packageName);
-      }
-
-      try {
-        fs.statSync(path.join(d3PathToSrc, packageBuildPath)).isFile();
-      } catch (err) {
-        console.error('[ERROR] D3 Package (' + packageName + ') is not built as expected, cannot continue. Please report this as a bug.');
+    this.d3Modules.map(pathToD3Source).forEach(function (source) {
+      if (!source) {
         return;
       }
 
-      var tree = new Funnel(d3PathToSrc, {
-        include: [packageBuildPath],
-        destDir: '/' + packageName,
-        annotation: 'Funnel: D3 Source [' + packageName + ']',
+      var tree = new Funnel(source.d3PathToSrc, {
+        include: [source.packageBuildPath],
+        destDir: '/' + source.packageName,
+        annotation: 'Funnel: D3 Source [' + source.packageName + ']',
       });
 
-      var srcTree = new AMDDefineFilter(tree, packageName);
+      var srcTree = new AMDDefineFilter(tree, source.packageName);
       trees.push(rename(srcTree, function () {
-        return '/' + packageName + '/' + packageName + '.js';
+        return '/' + source.packageName + '/' + source.packageName + '.js';
       }));
     });
 
