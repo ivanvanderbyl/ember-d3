@@ -58,7 +58,7 @@ module.exports = {
      */
     if (!app.import) {
       if (this.isDevelopingAddon()) {
-        console.log('[ember-cli-d3-shape] skipping included hook for', app.name);
+        this.ui.writeWarnLine('[ember-cli-d3-shape] skipping included hook for', app.name);
       }
 
       return;
