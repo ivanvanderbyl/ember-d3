@@ -1,19 +1,16 @@
-# ember-d3
+# ember-d3 [![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/ivanvanderbyl/ember-cli-d3-shape) [![Ember Observer Score](https://emberobserver.com/badges/ember-cli-d3-shape.svg)](https://emberobserver.com/addons/ember-cli-d3-shape) [![npm version](https://badge.fury.io/js/ember-cli-d3-shape.svg)](https://badge.fury.io/js/ember-cli-d3-shape) [![Dependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape.svg)](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape) [![devDependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
 
-[![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/ivanvanderbyl/ember-cli-d3-shape) [![Ember Observer Score](https://emberobserver.com/badges/ember-cli-d3-shape.svg)](https://emberobserver.com/addons/ember-cli-d3-shape) [![npm version](https://badge.fury.io/js/ember-cli-d3-shape.svg)](https://badge.fury.io/js/ember-cli-d3-shape) [![Dependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape.svg)](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape) [![devDependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
-
-`ember-d3` is a shim for D3 `4.x.x`, loaded from NPM as ES2015 modules. It includes `d3-shape` and all version 4 modules in D3 `4.x`.
-
-**If you're looking for the `ember-d3` for `d3@3.x`, see the `v3` branch.**
-
-
-## Installation
-
-Install the addon:
+Ember shim for loading `d3@4.x.x`. To install:
 
 ```
 ember install ember-d3
 ```
+
+D3 modules are loaded from NPM as ES2015 modules. It includes `d3-shape` and all version 4 modules in D3 `4.x`.
+
+**If you're looking for the `ember-d3` for `d3@3.x`, see the `v3` branch.**
+
+## Advanced Installation
 
 If you need a specified d3 version, add this to your project:
 
