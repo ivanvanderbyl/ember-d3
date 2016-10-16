@@ -3,6 +3,6 @@ module.exports = {
     'embertest': true
   },
   rules: {
-    'no-var':'on'
+    'no-var':'warn'
   }
 };
