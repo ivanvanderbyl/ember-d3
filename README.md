@@ -26,6 +26,12 @@ import { scaleOrdinal } from 'd3-scale';
 import { extent } from 'd3-array';
 ```
 
+## Specifying the `d3` version
+
+This addon is simply a loader for the `d3` NPM package. If you would like to
+specify a specific version on the d3 v4.x track, you can do so by installing that
+version directly in your project, and this addon will load that version.
+
 ## Svelte Builds
 
 In case you do not want to include *all* of d3's dependencies, you may whitelist the packages

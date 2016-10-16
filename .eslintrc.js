@@ -12,5 +12,6 @@ module.exports = {
     'node': true
   },
   rules: {
+    'no-var':'off'
   }
 };
