@@ -1,4 +1,4 @@
-# ember-d3 [![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/ivanvanderbyl/ember-cli-d3-shape) [![Ember Observer Score](https://emberobserver.com/badges/ember-cli-d3-shape.svg)](https://emberobserver.com/addons/ember-cli-d3-shape) [![npm version](https://badge.fury.io/js/ember-cli-d3-shape.svg)](https://badge.fury.io/js/ember-cli-d3-shape) [![Dependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape.svg)](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape) [![devDependency Status](https://david-dm.org/ivanvanderbyl/ember-cli-d3-shape/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
+# ember-d3 [![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/brzpegasus/ember-d3) [![Ember Observer Score](https://emberobserver.com/badges/ember-d3.svg)](https://emberobserver.com/addons/ember-d3) [![npm version](https://badge.fury.io/js/ember-d3.svg)](https://badge.fury.io/js/ember-d3) [![Dependency Status](https://david-dm.org/brzpegasus/ember-d3.svg)](https://david-dm.org/brzpegasus/ember-d3) [![devDependency Status](https://david-dm.org/brzpegasus/ember-d3/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
 
 Ember shim for loading `d3@4.x.x`. To install:
 
@@ -37,7 +37,7 @@ For example, if you only wanted to use `d3-scale`, you would do:
 // config/environment.js
 module.exports = function() {
   return {
-    'ember-cli-d3-shape': {
+    'ember-d3': {
       only: ['d3-scale']
     }
   };
@@ -50,7 +50,7 @@ Or if you want to exclude a package:
 // config/environment.js
 module.exports = function() {
   return {
-    'ember-cli-d3-shape': {
+    'ember-d3': {
       except: ['d3-scale']
     }
   };
