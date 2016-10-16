@@ -30,7 +30,7 @@ import { voronoi } from 'd3-voronoi';
 module('Unit | D3 Module Loading Test');
 
 test('loading d3-array', function(assert) {
-  assert.equal(mean([1,2,3]), 2);
+  assert.equal(mean([1, 2, 3]), 2);
 });
 
 test('loading d3-axis', function(assert) {
@@ -100,7 +100,7 @@ test('loading d3-path', function(assert) {
 });
 
 test('loading d3-polygon', function(assert) {
-  assert.deepEqual(polygonCentroid([[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]), [0.5,0.5], 'loaded polygonCentroid');
+  assert.deepEqual(polygonCentroid([[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]), [0.5, 0.5], 'loaded polygonCentroid');
 });
 
 test('loading d3-quadtree', function(assert) {
@@ -124,7 +124,7 @@ test('loading d3-queue', function(assert) {
 
   function callback(error, results) {
     assert.equal(null, error);
-    assert.deepEqual(results, [ 10 ]);
+    assert.deepEqual(results, [10]);
     done();
   }
 });
@@ -138,7 +138,7 @@ test('loading d3-request', function(assert) {
 });
 
 test('loading d3-scale', function(assert) {
-  let xScale = scaleLinear().domain([0,100]).rangeRound([0,500]);
+  let xScale = scaleLinear().domain([0, 100]).rangeRound([0, 500]);
   assert.equal(xScale(10), 50, 'loaded scale');
 });
 
