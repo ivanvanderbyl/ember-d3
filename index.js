@@ -80,7 +80,6 @@ module.exports = {
   },
 
   _getAllD3Modules() {
-    console.log(this.dependencies(null, false));
     return d3DepsForPackage('d3', this.parent.nodeModulesPath, this.ui);
   },
 
