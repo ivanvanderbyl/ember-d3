@@ -80,7 +80,7 @@ module.exports = {
   },
 
   _getAllD3Modules() {
-    return d3DepsForPackage('d3', this.project.nodeModulesPath, this.ui);
+    return d3DepsForPackage('d3', this.parent.nodeModulesPath, this.ui);
   },
 
   treeForVendor(tree) {
