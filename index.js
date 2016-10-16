@@ -41,27 +41,6 @@ module.exports = {
     this._super.included && this._super.included.apply(this, arguments);
     this.app = app;
 
-    // while (app.app) {
-      // app = app.app;
-    // }
-      // console.log(app.project.resolveSync('d3-array'));
-    // console.log(this.project.addonDiscovery.discoverFromDependencies());
-
-    // var specifiedD3Path = this.project.addonDiscovery.resolvePackage(this.project.root, 'd3');
-    // console.log(this.project.findAddonByName('ember-d3').nodeModulesPath);
-    // var _app = app;
-    // while (_app.app) {
-    //   // console.log(app.project.findAddonByName('ember-d3'));
-    //   console.dir(_app.project.addonDiscovery.resolvePackage(_app.project.root, 'ember-d3'));
-    //   _app = _app.app;
-    // }
-
-    // if (_app.app) {
-    //   console.log(_app.app.addonDiscovery);
-    //   // console.dir(_app.app.project.addonDiscovery.resolvePackage(_app.project.root, 'ember-d3'));
-    //   // console.log(app.app.project.root);
-    // }
-
     /*
       Find all dependencies of `d3`
      */
