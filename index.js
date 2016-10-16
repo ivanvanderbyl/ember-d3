@@ -1,34 +1,34 @@
-/* jshint node: true */
-'use strict';
-
+/* eslint "no-var":off, "ember-suave/prefer-destructuring":off */
 var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 var rename = require('broccoli-stew').rename;
 var AMDDefineFilter = require('./lib/amd-define-filter');
 var d3DepsForPackage = require('./lib/d3-deps-for-package');
-var pathToD3Source = require('./lib/path-to-d3-module-src');
+// var pathToD3Source = require('./lib/path-to-d3-module-src');
 var inclusionFilter = require('./lib/inclusion-filter');
 var exclusionFilter = require('./lib/exclusion-filter');
 
 module.exports = {
-  isDevelopingAddon: function () {
+  isDevelopingAddon() {
     return false;
   },
 
-  name: 'ember-cli-d3-shape',
+  name: 'ember-d3',
 
   /**
    * Array of d3 packages to load
    *
+   * @private
    * @type {Array<String>}
    */
   d3Modules: [],
 
   /**
    * `import()` taken from ember-cli 2.7
+   * @private
    */
-  import: function (asset, options) {
+  import(asset, options) {
     var app = this.app;
     while (app.app) {
       app = app.app;
@@ -37,13 +37,30 @@ module.exports = {
     app.import(asset, options);
   },
 
-  included: function (app) {
+  included(app) {
     this._super.included && this._super.included.apply(this, arguments);
     this.app = app;
 
-    while (app.app) {
-      app = app.app;
-    }
+    // while (app.app) {
+      // app = app.app;
+    // }
+      // console.log(app.project.resolveSync('d3-array'));
+    // console.log(this.project.addonDiscovery.discoverFromDependencies());
+
+    // var specifiedD3Path = this.project.addonDiscovery.resolvePackage(this.project.root, 'd3');
+    // console.log(this.project.findAddonByName('ember-d3').nodeModulesPath);
+    // var _app = app;
+    // while (_app.app) {
+    //   // console.log(app.project.findAddonByName('ember-d3'));
+    //   console.dir(_app.project.addonDiscovery.resolvePackage(_app.project.root, 'ember-d3'));
+    //   _app = _app.app;
+    // }
+
+    // if (_app.app) {
+    //   console.log(_app.app.addonDiscovery);
+    //   // console.dir(_app.app.project.addonDiscovery.resolvePackage(_app.project.root, 'ember-d3'));
+    //   // console.log(app.app.project.root);
+    // }
 
     /*
       Find all dependencies of `d3`
@@ -56,9 +73,9 @@ module.exports = {
       This essentially means we'll skip importing this package twice, if it's
       a dependency of another package.
      */
-    if (!app.import) {
+    if (!this.import) {
       if (this.isDevelopingAddon()) {
-        this.ui.writeWarnLine('[ember-cli-d3-shape] skipping included hook for', app.name);
+        this.ui.writeWarnLine('[ember-d3] skipping included hook for', this.name);
       }
 
       return;
@@ -68,8 +85,8 @@ module.exports = {
       Actually import the vendor tree packages to our app.
      */
     var _this = this;
-    this.d3Modules.forEach(function (packageName) {
-      _this.import(path.join('vendor', packageName, packageName + '.js'));
+    this.d3Modules.forEach(function(pkg) {
+      _this.import(path.join('vendor', pkg.name, `${pkg.name  }.js`));
     });
   },
 
@@ -84,33 +101,33 @@ module.exports = {
   },
 
   _getAllD3Modules() {
-    return d3DepsForPackage('d3');
+    return d3DepsForPackage('d3', this.project.nodeModulesPath, this.ui);
   },
 
-  treeForVendor: function (tree) {
+  treeForVendor(tree) {
     var trees = [];
 
     if (tree) {
       trees.push(tree);
     }
 
-    this.d3Modules.map(pathToD3Source).forEach(function (source) {
-      if (!source) {
+    this.d3Modules.forEach(function(pkg) {
+      if (!(pkg && pkg.path)) {
         return;
       }
 
-      var tree = new Funnel(source.d3PathToSrc, {
-        include: [source.packageBuildPath],
-        destDir: '/' + source.packageName,
-        annotation: 'Funnel: D3 Source [' + source.packageName + ']',
+      var tree = new Funnel(pkg.path, {
+        include: [pkg.buildPath],
+        destDir: `/${  pkg.name}`,
+        annotation: `Funnel: D3 Source [${  pkg.name  }]`
       });
 
-      var srcTree = new AMDDefineFilter(tree, source.packageName);
-      trees.push(rename(srcTree, function () {
-        return '/' + source.packageName + '/' + source.packageName + '.js';
+      var srcTree = new AMDDefineFilter(tree, pkg.name);
+      trees.push(rename(srcTree, function() {
+        return `/${  pkg.name  }/${  pkg.name  }.js`;
       }));
     });
 
     return mergeTrees(trees);
-  },
+  }
 };
