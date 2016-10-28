@@ -1,6 +1,7 @@
 /* eslint "no-var":off, "ember-suave/prefer-destructuring":off */
 var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
+var fs = require('fs');
 var path = require('path');
 var rename = require('broccoli-stew').rename;
 var RecastFilter = require('./lib/recast-filter');
@@ -10,6 +11,7 @@ var d3DepsForPackage = require('./lib/d3-deps-for-package');
 var d3Version = require('./lib/d3-version');
 var inclusionFilter = require('./lib/inclusion-filter');
 var exclusionFilter = require('./lib/exclusion-filter');
+var isD3Dependency = require('./lib/is-d3-dependency');
 
 module.exports = {
   isDevelopingAddon() {
@@ -84,7 +86,28 @@ module.exports = {
   },
 
   _getAllD3Modules() {
-    return d3DepsForPackage('d3', this.parent.nodeModulesPath, this.ui);
+    var d3Deps = d3DepsForPackage('d3', this.parent.nodeModulesPath, this.ui);
+
+    var pluginNames = Object.keys(this.parent.dependencies()).filter(isD3Dependency);
+    var pluginDeps  = pluginNames.map((packageName) => {
+      var packagePath = path.join(this.parent.nodeModulesPath, packageName);
+
+      try {
+        fs.statSync(packagePath).isDirectory();
+      } catch(err) {
+        this.ui.writeWarnLine(`[ember-d3] d3 sub module: "${  packageName  }" is not installed, please reinstall d3`);
+      }
+
+      var packageBuildPath = path.join('build', `${packageName}.js`);
+
+      return {
+        name: packageName,
+        path: packagePath,
+        buildPath: packageBuildPath
+      };
+    });
+    
+    return d3Deps.concat(pluginDeps);
   },
 
   treeForVendor(tree) {

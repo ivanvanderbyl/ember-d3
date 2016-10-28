@@ -20,6 +20,7 @@ import { randomUniform } from 'd3-random';
 import { request } from 'd3-request';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
+import 'd3-selection-multi';
 import { line } from 'd3-shape';
 import { timeDay } from 'd3-time';
 import { timeFormat } from 'd3-time-format';
@@ -144,6 +145,11 @@ test('loading d3-scale', function(assert) {
 
 test('loading d3-selection', function(assert) {
   assert.equal(typeof select, 'function', 'loaded selection');
+});
+
+test('loading d3-selection-multi', function(assert) {
+  assert.equal(typeof select().attrs, 'function', 'loaded selection multi attrs');
+  assert.equal(typeof select().styles, 'function', 'loaded selection multi styles');
 });
 
 test('loading d3-shape', function(assert) {
