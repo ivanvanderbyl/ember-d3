@@ -2,6 +2,13 @@
 
 Ember shim for loading `d3@4.x.x`. To install:
 
+First, make sure you're running on npm > 2, by running `npm -v`.
+If it's not the case then run
+```
+npm i -g npm@3
+```
+
+Then
 ```
 ember install ember-d3
 ```
