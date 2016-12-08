@@ -22,7 +22,7 @@ D3 modules are loaded from NPM as ES2015 modules. It includes `d3-shape` and all
 If you need a specified d3 version, add this to your project:
 
 ```
-npm install --save-dev d3@4.1.1
+npm install --save-dev d3@4.2.7
 ```
 
 ## Example usage:

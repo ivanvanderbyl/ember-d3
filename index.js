@@ -3,9 +3,11 @@ var Funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 var rename = require('broccoli-stew').rename;
-var AMDDefineFilter = require('./lib/amd-define-filter');
+var RecastFilter = require('./lib/recast-filter');
+var rewriteAMDFunction = require('./lib/rewrite-amd-definition');
+var replaceVersionString = require('./lib/replace-version-string');
 var d3DepsForPackage = require('./lib/d3-deps-for-package');
-// var pathToD3Source = require('./lib/path-to-d3-module-src');
+var d3Version = require('./lib/d3-version');
 var inclusionFilter = require('./lib/inclusion-filter');
 var exclusionFilter = require('./lib/exclusion-filter');
 
@@ -65,8 +67,10 @@ module.exports = {
      */
     var _this = this;
     this.d3Modules.forEach(function(pkg) {
-      _this.import(path.join('vendor', pkg.name, `${pkg.name  }.js`));
+      _this.import(path.join('vendor', pkg.name, `${ pkg.name }.js`));
     });
+
+    app.import(path.join('vendor', 'ember-d3', 'register-d3-version.js'));
   },
 
   getD3Modules(config) {
@@ -87,7 +91,13 @@ module.exports = {
     var trees = [];
 
     if (tree) {
-      trees.push(tree);
+      let versionTree = new RecastFilter(tree, null, replaceVersionString, {
+        version: d3Version('d3', this.parent.nodeModulesPath)
+      });
+
+      trees.push(rename(versionTree, function() {
+        return path.join('ember-d3', 'register-d3-version.js');
+      }));
     }
 
     this.d3Modules.forEach(function(pkg) {
@@ -101,7 +111,7 @@ module.exports = {
         annotation: `Funnel: D3 Source [${  pkg.name  }]`
       });
 
-      var srcTree = new AMDDefineFilter(tree, pkg.name);
+      var srcTree = new RecastFilter(tree, pkg.name, rewriteAMDFunction);
       trees.push(rename(srcTree, function() {
         return `/${  pkg.name  }/${  pkg.name  }.js`;
       }));
