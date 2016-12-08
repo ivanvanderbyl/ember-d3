@@ -13,7 +13,8 @@
   },
   "repository": "https://github.com/brzpegasus/ember-d3",
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 4.0.0",
+    "npm":">= 3.0.0"
   },
   "author": "Estelle DeBlois",
   "contributors": [
