@@ -6,9 +6,8 @@ Ember shim for loading `d3@4.x.x`. To install:
 ember install ember-d3
 ```
 
-** Important: You must be using NPM >= 3.0 and Node >= 4.0 for this to work,  
-or you'll get errors when you start your app. ** 
-Check by running `npm version`.
+**Important:** You must be using NPM >= 3.0 and Node >= 4.0 for this to work,  
+or you'll get errors when you start your app. Check by running `npm version`.
 
 You can upgrade NPM by running:
 
