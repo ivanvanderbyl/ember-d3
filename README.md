@@ -2,15 +2,18 @@
 
 Ember shim for loading `d3@4.x.x`. To install:
 
-First, make sure you're running on npm > 2, by running `npm -v`.
-If it's not the case then run
-```
-npm i -g npm@3
-```
-
-Then
 ```
 ember install ember-d3
+```
+
+** Important: You must be using NPM >= 3.0 and Node >= 4.0 for this to work,  
+or you'll get errors when you start your app. ** 
+Check by running `npm version`.
+
+You can upgrade NPM by running:
+
+```
+npm i -g npm@3
 ```
 
 D3 modules are loaded from NPM as ES2015 modules. It includes `d3-shape` and all version 4 modules in D3 `4.x`.
@@ -32,6 +35,10 @@ import { line } from 'd3-shape';
 import { scaleOrdinal } from 'd3-scale';
 import { extent } from 'd3-array';
 ```
+
+We've put together a [complete demo component](https://github.com/brzpegasus/ember-d3/blob/master/tests/dummy/app/components/simple-circles.js) 
+which you can use to really get a feel for how to use the different packages
+provided by this addon.
 
 ## Specifying the `d3` version
 

@@ -1,5 +1,9 @@
 # `ember-d3` Changelog
 
+### 0.3.2 (December 8, 2016)
+
+- Added dummy component to demonstrate use of this addon.
+
 ### 0.3.1 (December 8, 2016)
 
 - Refctored internal recasting Funnel.
