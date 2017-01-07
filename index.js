@@ -91,7 +91,7 @@ module.exports = {
     var trees = [];
 
     if (tree) {
-      let versionTree = new RecastFilter(tree, null, replaceVersionString, {
+      var versionTree = new RecastFilter(tree, null, replaceVersionString, {
         version: d3Version('d3', this.parent.nodeModulesPath)
       });
 
