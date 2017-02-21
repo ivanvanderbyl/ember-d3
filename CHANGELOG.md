@@ -1,20 +1,23 @@
-# `ember-d3` Changelog
+`ember-d3` Changelog
+=========
 
-### 0.3.2 (December 8, 2016)
+## v0.3.1
 
-- Added dummy component to demonstrate use of this addon.
+### Pull Requests
 
-### 0.3.1 (December 8, 2016)
+- [#27](https://github.com/brzpegasus/ember-d3/pull/27)  Use "var" instead of "let"  *by [Kamil Ejsymont](https://github.com/netes)*
+- [#28](https://github.com/brzpegasus/ember-d3/pull/28)  Fix package name checking for svelte builds.  *by [Eric Black](https://github.com/eablack)*
 
-- Refctored internal recasting Funnel.
-- Stopped logging D3 version number to stdout.
-- Register D3 version number with `Ember.libraries` so it's visiable in Ember Inspector.
+## v0.1.0
 
-### 0.3.0 (October 17, 2016)
+### Pull Requests
 
-- [BREAKING] - Removed D3 v3.x support (See [v3 branch](https://github.com/brzpegasus/ember-d3/tree/v3)),
-- [[PR#8](https://github.com/brzpegasus/ember-d3/pull/8)] [BREAKING] - Added D3 v4.x support as ES6 modules,
-  - Added support for configuring `only` and `exclude` when loading modules,
-  - Added this changelog,
-  - Added tests for loading D3 modules,
-  - Added support for consuming addon's to specify a D3 v4.x version.
+- [#2](https://github.com/brzpegasus/ember-d3/pull/2)  Update ember-cli  *by [Mike North](https://github.com/mike-north)*
+- [#3](https://github.com/brzpegasus/ember-d3/pull/3)  Fastboot compatibility  *by [Mike North](https://github.com/mike-north)*
+- [#6](https://github.com/brzpegasus/ember-d3/pull/6)  Fix loading in engines  *by [Cropster](https://github.com/Cropster)*
+- [#8](https://github.com/brzpegasus/ember-d3/pull/8)  Added support for loading D3 v4  *by [Ivan Vanderbyl](https://github.com/ivanvanderbyl)*
+- [#18](https://github.com/brzpegasus/ember-d3/pull/18)  add note about supported npm version  *by [sly7-7](https://github.com/sly7-7)*
+- [#14](https://github.com/brzpegasus/ember-d3/pull/14)  bump version  *by [sly7-7](https://github.com/sly7-7)*
+- [#24](https://github.com/brzpegasus/ember-d3/pull/24)  Expose library version to ember  *by [brzpegasus/feature](https://github.com/brzpegasus/feature)*
+- [#27](https://github.com/brzpegasus/ember-d3/pull/27)  Use "var" instead of "let"  *by [Kamil Ejsymont](https://github.com/netes)*
+- [#28](https://github.com/brzpegasus/ember-d3/pull/28)  Fix package name checking for svelte builds.  *by [Eric Black](https://github.com/eablack)*
