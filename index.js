@@ -96,7 +96,7 @@ module.exports = {
       });
 
       trees.push(rename(versionTree, function() {
-        return path.join('ember-d3', 'register-d3-version.js');
+        return 'ember-d3/register-d3-version.js';
       }));
     }
 
