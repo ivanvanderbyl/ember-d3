@@ -67,10 +67,10 @@ module.exports = {
      */
     var _this = this;
     this.d3Modules.forEach(function(pkg) {
-      _this.import(path.join('vendor', pkg.name, `${ pkg.name }.js`));
+      _this.import(path.posix.join('vendor', pkg.name, `${ pkg.name }.js`));
     });
 
-    app.import(path.join('vendor', 'ember-d3', 'register-d3-version.js'));
+    app.import(path.posix.join('vendor', 'ember-d3', 'register-d3-version.js'));
   },
 
   getD3Modules(config) {
@@ -96,7 +96,7 @@ module.exports = {
       });
 
       trees.push(rename(versionTree, function() {
-        return path.join('ember-d3', 'register-d3-version.js');
+        return path.posix.join('ember-d3', 'register-d3-version.js');
       }));
     }
 
