@@ -2,9 +2,7 @@
 
 var mergeTrees = require('broccoli-merge-trees');
 var d3DepsForPackage = require('./lib/d3-deps-for-package');
-var Rollup = require('broccoli-rollup');
 var path = require('path');
-var resolve = require('rollup-plugin-node-resolve');
 var rollupExternalPackage = require('./lib/rollup-external-package');
 module.exports = {
   isDevelopingAddon() {
@@ -38,17 +36,15 @@ module.exports = {
 
     let tree = 'app';
     let trees = d3Modules.map((module) => {
-      entry = path.join('node_modules', module.name, 'index.js');
-      let t = rollupExternalPackage(tree, module.name, entry, dependencies);
-
-      tree = t;
-
-      return t;
+      entry = path.posix.join('node_modules', module.name, 'index.js');
+      tree = rollupExternalPackage(tree, module.name, entry, dependencies, module.version);
+      return tree;
     });
 
     let d3SourcePath = 'node_modules/d3';
-    entry = path.join(d3SourcePath, 'index.js');
+    entry = path.posix.join(d3SourcePath, 'index.js');
 
+    // Rollup d3 with all module imports
     let d3Tree = rollupExternalPackage(tree, 'd3', entry, dependencies);
 
     trees.push(d3Tree);
