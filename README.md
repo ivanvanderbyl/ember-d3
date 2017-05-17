@@ -1,7 +1,6 @@
 # ember-d3 [![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/brzpegasus/ember-d3) [![Ember Observer Score](https://emberobserver.com/badges/ember-d3.svg)](https://emberobserver.com/addons/ember-d3) [![npm version](https://badge.fury.io/js/ember-d3.svg)](https://badge.fury.io/js/ember-d3) [![Dependency Status](https://david-dm.org/brzpegasus/ember-d3.svg)](https://david-dm.org/brzpegasus/ember-d3) [![devDependency Status](https://david-dm.org/brzpegasus/ember-d3/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
 
-This addon does one this: load `d3@4.x.x` into your app or addon, so you can
-use D3 as you please on its own or as part of a visualisation addon.
+This addon does one this: load `d3@4.x.x` into your app or addon, so you can use D3 as you please on its own or as part of a visualisation addon.
 
 
 ```
@@ -47,26 +46,17 @@ import D3 from 'd3';
 ```
 
 We've put together a [complete demo component](https://github.com/brzpegasus/ember-d3/blob/master/tests/dummy/app/components/simple-circles.js) 
-which you can use to really get a feel for how to use the different packages
-provided by this addon.
-
-## Specifying the `d3` version
-
-This addon is simply a loader for the `d3` NPM package. If you would like to
-specify a specific version on the d3 v4.x release track, you can do so by 
-installing that version directly in your project, and this addon 
-will load that version.
+which you can use to really get a feel for how to use the different packages provided by this addon.
 
 ## Tree Shaking
+Under the hood we use Rollup to compile all the dependencies for D3, and Rollup supports basic tree-shaking. If you want to avoid loading packages you don't need, you can exclude them in your project's config. 
 
-Under the hood we use Rollup to compile all the dependencies for D3, and Rollup
-supports basic tree shaking. If you want to avoid loading packages you don't need,
-you can exclude them in your project's config. Note: If a package you exclude is
-a dependency of a package you include, it will be loaded regardless so fulfill that
-dependency.
+**Note:** If you exclude a package which
+a dependency of another package, it will be loaded regardless to fulfil that dependency.
+
+**Note 2:** The global import of `d3` requires all packages, and must be on the exclusion list for this to have any effect.
 
 #### Dependency whitelist/blacklist
-
 In case you do not want to include *all* of d3's dependencies, you may whitelist 
 the packages that you want to include in your project's `config/environment.js` file.
 
@@ -106,8 +96,6 @@ These are added to your project automatically.
 * `ember test --server`
 
 # Contributing
+This addon is developed by the community and is maintained by [Ivan Vanderbyl](https://github.com/ivanvanderbyl). 
 
-This addon is developed my the community, it has changed owners a few times,
-and is currently maintained by [Ivan Vanderbyl](https://github.com/ivanvanderbyl). 
 All contributions are welcome by opening an issue or Pull Request.
-
