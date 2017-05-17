@@ -41,14 +41,14 @@ module.exports = {
       return tree;
     });
 
-    let d3SourcePath = 'node_modules/d3';
+    let d3SourcePath = path.posix.join('node_modules', 'd3');
     entry = path.posix.join(d3SourcePath, 'index.js');
 
     // Rollup d3 with all module imports
     let d3Tree = rollupExternalPackage(tree, 'd3', entry, dependencies);
 
     trees.push(d3Tree);
-    return mergeTrees(trees);
+    return mergeTrees(trees, { overwrite: true });
   }
 
 };
