@@ -1,6 +1,6 @@
 # ember-d3 [![Build Status](https://travis-ci.org/brzpegasus/ember-d3.svg?branch=master)](https://travis-ci.org/brzpegasus/ember-d3) [![Ember Observer Score](https://emberobserver.com/badges/ember-d3.svg)](https://emberobserver.com/addons/ember-d3) [![npm version](https://badge.fury.io/js/ember-d3.svg)](https://badge.fury.io/js/ember-d3) [![Dependency Status](https://david-dm.org/brzpegasus/ember-d3.svg)](https://david-dm.org/brzpegasus/ember-d3) [![devDependency Status](https://david-dm.org/brzpegasus/ember-d3/dev-status.svg)](https://david-dm.org/brzpegasus/ember-d3.svg#info=devDependencies)
 
-This addon does one this: load D3.js version 4.x.x into your app or addon, so you can
+This addon does one this: load `d3@4.x.x` into your app or addon, so you can
 use D3 as you please on its own or as part of a visualisation addon.
 
 
