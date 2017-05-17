@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/ivanvanderbyl/ember-d3",
   "engines": {
-    "node": ">= 4.0.0",
+    "node": ">= 6.4.0",
     "npm": ">= 3.0.0"
   },
   "author": "Ivan Vanderbyl",
