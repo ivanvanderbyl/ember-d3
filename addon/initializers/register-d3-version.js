@@ -2,12 +2,13 @@ import Ember from 'ember';
 import { version } from 'd3';
 const { libraries } = Ember;
 
+let registered = false;
+if (!registered) {
+  libraries.register('D3.js', version);
+  registered = true;
+}
+
 export function initialize(/* application */) {
-  var registered = false;
-  if (!registered) {
-    libraries.register('D3.js', version);
-    registered = true;
-  }
 }
 
 export default {

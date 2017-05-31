@@ -4,6 +4,9 @@ var mergeTrees = require('broccoli-merge-trees');
 var d3DepsForPackage = require('./lib/d3-deps-for-package');
 var path = require('path');
 var rollupExternalPackage = require('./lib/rollup-external-package');
+var inclusionFilter = require('./lib/inclusion-filter');
+var exclusionFilter = require('./lib/exclusion-filter');
+
 module.exports = {
   isDevelopingAddon() {
     return false;
@@ -15,40 +18,82 @@ module.exports = {
     return d3DepsForPackage('d3', this.parent.nodeModulesPath, this.ui);
   },
 
-  included() {
-    let d3Modules = this._getAllD3Modules();
+  getD3Modules(config) {
+    var allModules = this._getAllD3Modules();
+    var onlyModules = config.only || [];
+    var exceptModules = config.except || [];
+
+    return allModules
+      .filter(inclusionFilter(onlyModules))
+      .filter(exclusionFilter(exceptModules));
+  },
+
+  included(app) {
+    this._super.included.apply(this, arguments);
+
+    if (!this.import) {
+      if (this.isDevelopingAddon()) {
+        this.ui.writeWarnLine('[ember-d3] skipping included hook for', this.name);
+      }
+
+      return;
+    }
+
+    let config = app.project.config(app.env) || {};
+    this.addonConfig = config[this.name] || {};
+
+    let plugins = this.addonConfig.plugins || [];
+
+    // let d3Modules = this._getAllD3Modules();
+    this.d3Modules = this.getD3Modules(this.addonConfig);
+
+    plugins.forEach((pluginName) => {
+      this.d3Modules.push({ name: pluginName });
+    });
 
     // Import each D3 module
-    d3Modules.forEach((module) => {
+    this.d3Modules.forEach((module) => {
       this.import(path.posix.join('vendor', `${module.name }.js`));
     });
 
-    // Import D3 include for bundled imports
-    this.import(path.posix.join('vendor', 'd3.js'));
+    if (!this.addonConfig.only && !this.addonConfig.except) {
+      // Import D3 include for bundled imports
+      this.import(path.posix.join('vendor', 'd3.js'));
+    }
   },
 
   treeForVendor() {
-    let d3Modules = this._getAllD3Modules();
-    let dependencies = d3Modules.map((dep) => dep.name);
+    // NOTE: This is a static string because we use Rollup to do the actual resolve.
+    let nodeModulesPath = 'node_modules';
+
+    let dependencies = this.d3Modules.map((dep) => dep.name);
 
     // Rollup each D3 library
     let entry;
 
     let tree = 'app';
-    let trees = d3Modules.map((module) => {
-      entry = path.posix.join('node_modules', module.name, 'index.js');
+    let trees = this.d3Modules.map((module) => {
+      entry = path.posix.join(nodeModulesPath, module.name, 'index.js');
       tree = rollupExternalPackage(tree, module.name, entry, dependencies, module.version);
       return tree;
     });
 
-    let d3SourcePath = path.posix.join('node_modules', 'd3');
+    let d3SourcePath = path.posix.join(nodeModulesPath, 'd3');
     entry = path.posix.join(d3SourcePath, 'index.js');
 
-    // Rollup d3 with all module imports
-    let d3Tree = rollupExternalPackage(tree, 'd3', entry, dependencies);
+    // Only package D3 bundle if all modules are included.
+    if (!this._hasOnlyOrExceptConfig()) {
+      // Rollup d3 with all module imports
+      let d3Tree = rollupExternalPackage(tree, 'd3', entry, dependencies);
 
-    trees.push(d3Tree);
+      trees.push(d3Tree);
+    }
     return mergeTrees(trees, { overwrite: true });
+  },
+
+  _hasOnlyOrExceptConfig() {
+    return this.addonConfig.only && this.addonConfig.only.length
+           || this.addonConfig.except && this.addonConfig.except.length;
   }
 
 };
