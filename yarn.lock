@@ -1596,7 +1596,7 @@ ember-cli-broccoli-sane-watcher@^2.0.3:
     rsvp "^3.0.18"
     sane "^1.1.1"
 
-ember-cli-changelog@0.3.4:
+ember-cli-changelog@^0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/ember-cli-changelog/-/ember-cli-changelog-0.3.4.tgz#6bdb711ade38ea9128217a27ca68c94a4d1fadcb"
   dependencies:
