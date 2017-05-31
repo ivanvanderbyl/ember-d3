@@ -1,6 +1,6 @@
 {
   "name": "ember-d3",
-  "version": "0.4.0-beta.0",
+  "version": "0.5.0-beta.0",
   "description": "Loads D3.js into your Ember application",
   "directories": {
     "doc": "doc",
