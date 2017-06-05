@@ -3,6 +3,7 @@
 var mergeTrees = require('broccoli-merge-trees');
 var d3DepsForPackage = require('./lib/d3-deps-for-package');
 var path = require('path');
+var Funnel = require('broccoli-funnel');
 var rollupExternalPackage = require('./lib/rollup-external-package');
 var inclusionFilter = require('./lib/inclusion-filter');
 var exclusionFilter = require('./lib/exclusion-filter');
@@ -59,6 +60,28 @@ module.exports = {
     if (!this.addonConfig.only && !this.addonConfig.except) {
       // Import D3 include for bundled imports
       this.import(path.posix.join('vendor', 'd3.js'));
+    }
+  },
+
+  treeForApp(_tree) {
+    if (this._hasOnlyOrExceptConfig()) {
+      var tree = new Funnel(_tree, {
+        exclude: ['app/initializers/register-d3-version.js']
+      });
+      this._super.treeForApp.call(this, tree);
+    } else {
+      this._super.treeForApp.call(this, _tree);
+    }
+  },
+
+  treeForAddon(_tree) {
+    if (this._hasOnlyOrExceptConfig()) {
+      var tree = new Funnel(_tree, {
+        exclude: ['addon/initializers/register-d3-version.js']
+      });
+      this._super.treeForAddon.call(this, tree);
+    } else {
+      this._super.treeForAddon.call(this, _tree);
     }
   },
 

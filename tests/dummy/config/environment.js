@@ -23,7 +23,7 @@ module.exports = function(environment) {
     },
 
     'ember-d3': {
-      // only: ['d3-shape', 'd3-path']
+      // only: ['d3-shape', 'd3-path', 'd3-array', 'd3-selection']
     }
   };
 
