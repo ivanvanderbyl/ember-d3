@@ -15,7 +15,7 @@ You can upgrade NPM by running:
 npm i -g npm@3
 ```
 
-D3 modules are loaded from NPM as ES2015 modules. It includes `d3-shape` and all version 4 modules in D3 `4.x`.
+D3 modules are loaded from NPM as ES2015 modules. It includes `d3-shape` and all version 4 modules in D3 `4.x`. You can view the complete [list of D3 (version 4.x) modules](https://gist.github.com/biovisualize/2740d97b661aa45da69d081423a90416) that are available to import.
 
 **If you're looking for the `ember-d3` for `d3@3.x`, see the `v3` branch.**
 
