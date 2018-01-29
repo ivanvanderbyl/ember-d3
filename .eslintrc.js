@@ -1,17 +1,14 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module'
+    ecmaVersion: 7,
+    sourceType: "module"
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:ember-suave/recommended'
-  ],
+  extends: ["eslint:recommended"],
   env: {
-    'node': true
+    node: true
   },
   rules: {
-    'no-var':'off'
+    "no-var": "off"
   }
 };
