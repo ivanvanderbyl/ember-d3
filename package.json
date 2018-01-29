@@ -14,13 +14,10 @@
   "repository": "https://github.com/ivanvanderbyl/ember-d3",
   "engines": {
     "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
+    "npm": ">= 4.0.0"
   },
   "author": "Ivan Vanderbyl",
-  "contributors": [
-    "Estelle DeBlois",
-    "Mike North"
-  ],
+  "contributors": ["Estelle DeBlois", "Mike North"],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
@@ -45,22 +42,29 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
     "ember-source": "~2.13.0",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "prettier": "^1.10.2"
   },
-  "keywords": [
-    "ember-addon",
-    "d3"
-  ],
+  "keywords": ["ember-addon", "d3"],
   "dependencies": {
     "broccoli-merge-trees": "^1.1.2",
     "broccoli-rollup": "^1.3.0",
-    "d3": "^4.9.1",
+    "d3": "^4.13.0",
     "ember-cli-babel": "^6.1.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "after": [
-      "d3"
-    ]
+    "after": ["d3"]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100,
+    "useTabs": true,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "arrowParens": "avoid"
   }
 }
