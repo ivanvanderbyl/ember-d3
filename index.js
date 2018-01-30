@@ -1,4 +1,4 @@
-/* eslint "no-var":off, "ember-suave/prefer-destructuring":off */
+/* eslint-disable */
 
 var mergeTrees = require('broccoli-merge-trees')
 var d3DepsForPackage = require('./lib/d3-deps-for-package')
@@ -17,7 +17,7 @@ module.exports = {
 
 	_getAllD3Modules() {
 		let nodeModulesPath = require('resolve').sync('d3', {
-			basedir: this.project.root,
+			basedir: this.project.root
 		})
 
 		return d3DepsForPackage('d3', nodeModulesPath, this.ui)
@@ -34,11 +34,31 @@ module.exports = {
 	included(app) {
 		this._super.included.apply(this, arguments)
 
-		if (!this.import) {
+		let target = app
+
+		if (typeof this.import === 'function') {
+			target = this
+		} else {
+			// If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
+			// use that.
+			if (typeof this._findHost === 'function') {
+				target = this._findHost()
+			}
+
+			// Otherwise, we'll use this implementation borrowed from the _findHost()
+			// method in ember-cli.
+			// Keep iterating upward until we don't have a grandparent.
+			// Has to do this grandparent check because at some point we hit the project.
+			let current = this
+			do {
+				target = current.app || app
+			} while (current.parent.parent && (current = current.parent))
+		}
+
+		if (!target.import) {
 			if (this.isDevelopingAddon()) {
 				this.ui.writeWarnLine('[ember-d3] skipping included hook for', this.name)
 			}
-
 			return
 		}
 
@@ -56,19 +76,19 @@ module.exports = {
 
 		// Import each D3 module
 		this.d3Modules.forEach(module => {
-			this.import(path.posix.join('vendor', `${module.name}.js`))
+			target.import(path.posix.join('vendor', `${module.name}.js`))
 		})
 
 		if (!this.addonConfig.only && !this.addonConfig.except) {
 			// Import D3 include for bundled imports
-			this.import(path.posix.join('vendor', 'd3.js'))
+			target.import(path.posix.join('vendor', 'd3.js'))
 		}
 	},
 
 	treeForApp(_tree) {
 		if (this._hasOnlyOrExceptConfig()) {
 			var tree = new Funnel(_tree, {
-				exclude: ['app/initializers/register-d3-version.js'],
+				exclude: ['app/initializers/register-d3-version.js']
 			})
 			this._super.treeForApp.call(this, tree)
 		} else {
@@ -79,7 +99,7 @@ module.exports = {
 	treeForAddon(_tree) {
 		if (this._hasOnlyOrExceptConfig()) {
 			var tree = new Funnel(_tree, {
-				exclude: ['addon/initializers/register-d3-version.js'],
+				exclude: ['addon/initializers/register-d3-version.js']
 			})
 			this._super.treeForAddon.call(this, tree)
 		} else {
@@ -121,5 +141,5 @@ module.exports = {
 			(this.addonConfig.only && this.addonConfig.only.length) ||
 			(this.addonConfig.except && this.addonConfig.except.length)
 		)
-	},
+	}
 }
