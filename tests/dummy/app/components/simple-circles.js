@@ -71,7 +71,7 @@ export default Component.extend({
 		let yScale = scaleLinear()
 			.domain(
 				// `extent()` requires that data is sorted ascending
-				extent(data.map(d => d.value).sort(ascending)),
+				extent(data.map(d => d.value).sort(ascending))
 			)
 			.range([0, height])
 
@@ -104,5 +104,5 @@ export default Component.extend({
 			.attr('r', d => yScale(d.value) / 2)
 			.attr('cy', () => height / 2)
 			.attr('cx', d => xScale(d.timestamp))
-	},
+	}
 })

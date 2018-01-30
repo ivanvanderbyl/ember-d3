@@ -13,8 +13,8 @@ module.exports = function(environment) {
 			},
 			EXTEND_PROTOTYPES: {
 				// Prevent Ember Data from overriding Date.parse.
-				Date: false,
-			},
+				Date: false
+			}
 		},
 
 		APP: {
@@ -24,7 +24,7 @@ module.exports = function(environment) {
 
 		'ember-d3': {
 			// only: ['d3-shape', 'd3-path', 'd3-array', 'd3-selection']
-		},
+		}
 	}
 
 	if (environment === 'development') {

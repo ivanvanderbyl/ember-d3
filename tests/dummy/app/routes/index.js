@@ -19,7 +19,7 @@ export default Route.extend({
 				this._updateData(controller)
 			},
 			controller,
-			1e3,
+			1e3
 		)
 	},
 
@@ -34,5 +34,5 @@ export default Route.extend({
 		}
 
 		return data.sort((a, b) => ascending(a.timestamp, b.timestamp))
-	},
+	}
 })

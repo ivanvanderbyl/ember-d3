@@ -68,10 +68,10 @@ test('loading d3-dsv', function(assert) {
 		[
 			{
 				location: 'Unknown',
-				name: 'Ivan',
-			},
+				name: 'Ivan'
+			}
 		],
-		'loaded dsv',
+		'loaded dsv'
 	)
 })
 
@@ -107,7 +107,7 @@ test('loading d3-polygon', function(assert) {
 	assert.deepEqual(
 		polygonCentroid([[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]),
 		[0.5, 0.5],
-		'loaded polygonCentroid',
+		'loaded polygonCentroid'
 	)
 })
 
@@ -119,13 +119,13 @@ test('loading d3-quadtree', function(assert) {
 		{ data: [0, 0] },
 		{ data: [1, 0] },
 		undefined,
-		{ data: [1, 1] },
+		{ data: [1, 1] }
 	])
 	assert.deepEqual(q.add([0, 1]).root(), [
 		{ data: [0, 0] },
 		{ data: [1, 0] },
 		{ data: [0, 1] },
-		{ data: [1, 1] },
+		{ data: [1, 1] }
 	])
 })
 
@@ -178,7 +178,7 @@ test('loading d3-shape', function(assert) {
 		{ x: 3, y: 98.84 },
 		{ x: 4, y: 99.92 },
 		{ x: 5, y: 99.8 },
-		{ x: 6, y: 99.47 },
+		{ x: 6, y: 99.47 }
 	]
 
 	assert.equal(l(data), 'M1,93.24L2,95.35L3,98.84L4,99.92L5,99.8L6,99.47', 'loaded shape')
