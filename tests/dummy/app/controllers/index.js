@@ -1,5 +1,8 @@
-import Controller from 'ember-controller'
+import Controller from '@ember/controller'
 
 export default Controller.extend({
-	circleData: []
+	init() {
+		this._super()
+		this.circleData = []
+	}
 })

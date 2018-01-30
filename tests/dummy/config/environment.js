@@ -1,4 +1,4 @@
-/* eslint-env node */
+'use strict'
 
 module.exports = function(environment) {
 	let ENV = {
@@ -20,10 +20,6 @@ module.exports = function(environment) {
 		APP: {
 			// Here you can pass flags/options to your application instance
 			// when it is created
-		},
-
-		'ember-d3': {
-			// only: ['d3-shape', 'd3-path', 'd3-array', 'd3-selection']
 		}
 	}
 
@@ -44,9 +40,11 @@ module.exports = function(environment) {
 		ENV.APP.LOG_VIEW_LOOKUPS = false
 
 		ENV.APP.rootElement = '#ember-testing'
+		ENV.APP.autoboot = false
 	}
 
 	if (environment === 'production') {
+		// here you can enable a production-specific feature
 	}
 
 	return ENV

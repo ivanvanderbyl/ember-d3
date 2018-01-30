@@ -16,9 +16,10 @@
  * transition the data `merge` from new data to existing data.
  */
 
-import Ember from 'ember'
 import Component from '@ember/component'
 import layout from '../templates/components/simple-circles'
+import { run } from '@ember/runloop'
+import { get } from '@ember/object'
 
 // Import the D3 packages we want to use
 import { select } from 'd3-selection'
@@ -26,8 +27,6 @@ import { scaleLinear } from 'd3-scale'
 import { extent, ascending } from 'd3-array'
 import { transition } from 'd3-transition'
 import { easeCubicInOut } from 'd3-ease'
-
-const { run, get } = Ember
 
 export default Component.extend({
 	layout,
@@ -42,7 +41,10 @@ export default Component.extend({
 
 	// Array of points to render as circles in a line, spaced by time.
 	//  [ {value: Number, timestamp: Number } ];
-	data: [],
+	init() {
+		this._super()
+		this.data = []
+	},
 
 	didReceiveAttrs() {
 		// Schedule a call to our `drawCircles` method on Ember's "render" queue, which will

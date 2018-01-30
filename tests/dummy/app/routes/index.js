@@ -1,8 +1,6 @@
-import Ember from 'ember'
-import Route from 'ember-route'
+import { run } from '@ember/runloop'
+import Route from '@ember/route'
 import { ascending } from 'd3-array'
-
-const { run } = Ember
 
 export default Route.extend({
 	setupController(controller) {
