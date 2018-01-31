@@ -1,5 +1,5 @@
 import { run } from '@ember/runloop'
-import Route from '@ember/route'
+import Route from '@ember/routing/route'
 import { ascending } from 'd3-array'
 
 export default Route.extend({
