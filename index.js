@@ -1,145 +1,159 @@
 /* eslint-disable */
 
-var mergeTrees = require('broccoli-merge-trees')
-var d3DepsForPackage = require('./lib/d3-deps-for-package')
-var path = require('path')
-var Funnel = require('broccoli-funnel')
-var rollupExternalPackage = require('./lib/rollup-external-package')
-var inclusionFilter = require('./lib/inclusion-filter')
-var exclusionFilter = require('./lib/exclusion-filter')
+const path = require('path')
+const mergeTrees = require('broccoli-merge-trees')
+const Funnel = require('broccoli-funnel')
+const inclusionFilter = require('./lib/inclusion-filter')
+const exclusionFilter = require('./lib/exclusion-filter')
+const UnwatchedDir = require('broccoli-source').UnwatchedDir
+const existsSync = require('exists-sync')
 
 module.exports = {
 	isDevelopingAddon() {
-		return false
+		return true
 	},
 
 	name: 'ember-d3',
 
-	_getAllD3Modules() {
-		let nodeModulesPath = require('resolve').sync('d3', {
-			basedir: this.project.root
+	allD3Modules(target) {
+		let deps = target.dependencies()
+		let d3ModuleNames = Object.keys(deps).filter(dep => dep.startsWith('d3'))
+
+		if (d3ModuleNames.indexOf('d3') === -1) {
+			this.ui.writeError('ERROR: Package d3 is not installed, please add it to your dependencies')
+			return []
+		} else {
+			d3ModuleNames = [...d3ModuleNames, ...dependenciesForPackage('d3')]
+		}
+
+		let paths = d3ModuleNames.map(name => {
+			let modulePath = resolveSync(name, true)
+			return { name, path: modulePath, basename: path.basename(modulePath) }
 		})
 
-		return d3DepsForPackage('d3', nodeModulesPath, this.ui)
+		return paths
+
+		function dependenciesForPackage(depName) {
+			let pkgPath = resolveSync(path.posix.join(depName, 'package.json'))
+			return Object.keys(target.project.require(pkgPath).dependencies).filter(dep =>
+				dep.startsWith('d3-')
+			)
+		}
+
+		function resolveSync(name, isBrowserTarget) {
+			if (isBrowserTarget === undefined) isBrowserTarget = false
+			return require('resolve').sync(name, {
+				basedir: target.project.root,
+				packageFilter(pkg, agr2) {
+					if (isBrowserTarget && pkg.hasOwnProperty('unpkg')) {
+						// D3 publishes browser build at `unpkg`
+						pkg.main = pkg.unpkg
+					}
+					return pkg
+				}
+			})
+		}
 	},
 
-	getD3Modules(config) {
-		var allModules = this._getAllD3Modules()
-		var onlyModules = config.only || []
-		var exceptModules = config.except || []
+	filterD3Modules(modules, config) {
+		/**
+		 * config.bundle will import all d3 packages as d3, this is identical to d3.js
+		 *
+		 * Cannot be used with any other options.
+		 */
+		if (config.bundle) {
+			return modules.filter(({ name }) => name === 'd3')
+		} else {
+			modules = modules.filter(({ name }) => name !== 'd3')
 
-		return allModules.filter(inclusionFilter(onlyModules)).filter(exclusionFilter(exceptModules))
+			/**
+			 * config.only accepts a list of packages to include from all included dependencies of d3.
+			 */
+			var onlyModules = config.only || []
+
+			/**
+			 * config.except accepts a list of package name to exclude from the build,
+			 * this is the opposite of only.
+			 */
+			var exceptModules = config.except || []
+
+			return modules.filter(inclusionFilter(onlyModules)).filter(exclusionFilter(exceptModules))
+		}
 	},
 
 	included(app) {
 		this._super.included.apply(this, arguments)
 
-		let target = app
+		// 1. Find target app to locate d3 dependencies from
+		let target = findTargetHost(this, app)
 
-		if (typeof this.import === 'function') {
-			target = this
-		} else {
-			// If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
-			// use that.
-			if (typeof this._findHost === 'function') {
-				target = this._findHost()
-			}
-
-			// Otherwise, we'll use this implementation borrowed from the _findHost()
-			// method in ember-cli.
-			// Keep iterating upward until we don't have a grandparent.
-			// Has to do this grandparent check because at some point we hit the project.
-			let current = this
-			do {
-				target = current.app || app
-			} while (current.parent.parent && (current = current.parent))
-		}
-
-		if (!target.import) {
-			if (this.isDevelopingAddon()) {
-				this.ui.writeWarnLine('[ember-d3] skipping included hook for', this.name)
-			}
-			return
-		}
-
+		// 2. Load app config for our addon
 		let config = app.project.config(app.env) || {}
-		this.addonConfig = config[this.name] || {}
+		let addonConfig = config[this.name] || {}
+		this.d3Modules = this.filterD3Modules(this.allD3Modules(target), addonConfig)
 
-		let plugins = this.addonConfig.plugins || []
-
-		// let d3Modules = this._getAllD3Modules();
-		this.d3Modules = this.getD3Modules(this.addonConfig)
-
-		plugins.forEach(pluginName => {
-			this.d3Modules.push({ name: pluginName })
+		this.d3Modules.forEach(({ name, basename }) => {
+			target.import(path.posix.join('vendor', 'd3', basename), {
+				using: [{ transformation: 'amd', as: name }]
+			})
 		})
-
-		// Import each D3 module
-		this.d3Modules.forEach(module => {
-			target.import(path.posix.join('vendor', `${module.name}.js`))
-		})
-
-		if (!this.addonConfig.only && !this.addonConfig.except) {
-			// Import D3 include for bundled imports
-			target.import(path.posix.join('vendor', 'd3.js'))
-		}
 	},
 
-	treeForApp(_tree) {
-		if (this._hasOnlyOrExceptConfig()) {
-			var tree = new Funnel(_tree, {
-				exclude: ['app/initializers/register-d3-version.js']
-			})
-			this._super.treeForApp.call(this, tree)
-		} else {
-			this._super.treeForApp.call(this, _tree)
-		}
-	},
-
-	treeForAddon(_tree) {
-		if (this._hasOnlyOrExceptConfig()) {
-			var tree = new Funnel(_tree, {
-				exclude: ['addon/initializers/register-d3-version.js']
-			})
-			this._super.treeForAddon.call(this, tree)
-		} else {
-			this._super.treeForAddon.call(this, _tree)
-		}
+	afterInstall() {
+		return this.addPackageToProject('d3')
 	},
 
 	treeForVendor() {
-		// NOTE: This is a static string because we use Rollup to do the actual resolve.
-		let nodeModulesPath = 'node_modules'
+		let trees = []
 
-		let dependencies = this.d3Modules.map(dep => dep.name)
+		this.d3Modules.forEach(({ name, path: modulePath, basename }) => {
+			let dir = path.dirname(modulePath)
 
-		// Rollup each D3 library
-		let entry
-
-		let tree = 'app'
-		let trees = this.d3Modules.map(module => {
-			entry = path.posix.join(nodeModulesPath, module.name, 'index.js')
-			tree = rollupExternalPackage(tree, module.name, entry, dependencies, module.version)
-			return tree
+			trees.push(
+				Funnel(new UnwatchedDir(dir), {
+					files: [basename],
+					annotation: `basename`,
+					destDir: '/d3'
+				})
+			)
 		})
 
-		let d3SourcePath = path.posix.join(nodeModulesPath, 'd3')
-		entry = path.posix.join(d3SourcePath, 'index.js')
-
-		// Only package D3 bundle if all modules are included.
-		if (!this._hasOnlyOrExceptConfig()) {
-			// Rollup d3 with all module imports
-			let d3Tree = rollupExternalPackage(tree, 'd3', entry, dependencies)
-
-			trees.push(d3Tree)
-		}
 		return mergeTrees(trees, { overwrite: true })
-	},
-
-	_hasOnlyOrExceptConfig() {
-		return (
-			(this.addonConfig.only && this.addonConfig.only.length) ||
-			(this.addonConfig.except && this.addonConfig.except.length)
-		)
 	}
 }
+
+function findTargetHost(addon, app) {
+	let target = app
+
+	if (typeof addon.import === 'function') {
+		target = addon
+	} else {
+		// If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
+		// use that.
+		if (typeof addon._findHost === 'function') {
+			target = addon._findHost()
+		}
+
+		// Otherwise, we'll use this implementation borrowed from the _findHost()
+		// method in ember-cli.
+		// Keep iterating upward until we don't have a grandparent.
+		// Has to do this grandparent check because at some point we hit the project.
+		let current = addon
+		do {
+			target = current.app || app
+		} while (current.parent.parent && (current = current.parent))
+	}
+
+	return target
+}
+
+// function checkForMinBuildFile(modulePath) {
+// 	if(modulePath.endsWith('.min.js')) return modulePath
+
+// 	let dirname = path.dirname(modulePath)
+// 	let basename = path.basename(modulePath, 'js')
+// 	let minBasename = `${basename}.min.js`
+// 	let minPath = path.posix.join(dirname, minBasename)
+// 	if (existsSync(minPath)) return minPath
+// 	return modulePath
+// }
