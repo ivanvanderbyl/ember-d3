@@ -18,10 +18,7 @@
 		"npm": ">= 4.0.0"
 	},
 	"author": "Ivan Vanderbyl",
-	"contributors": [
-		"Estelle DeBlois",
-		"Mike North"
-	],
+	"contributors": ["Estelle DeBlois", "Mike North"],
 	"license": "MIT",
 	"devDependencies": {
 		"broccoli-asset-rev": "^2.4.5",
@@ -50,22 +47,16 @@
 		"loader.js": "^4.2.3",
 		"prettier": "^1.10.2"
 	},
-	"keywords": [
-		"ember-addon",
-		"d3"
-	],
+	"keywords": ["ember-addon", "d3"],
 	"dependencies": {
 		"broccoli-funnel": "^2.0.0",
 		"broccoli-merge-trees": "^1.1.2",
-		"d3-flame-graph": "^1.0.11",
 		"d3-selection-multi": "^1.0.1",
 		"ember-cli-babel": "^6.6.0"
 	},
 	"ember-addon": {
 		"configPath": "tests/dummy/config",
-		"after": [
-			"d3"
-		]
+		"after": ["d3"]
 	},
 	"prettier": {
 		"semi": false,

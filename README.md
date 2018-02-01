@@ -47,14 +47,28 @@ import D3 from 'd3'
 We've put together a [complete demo component](https://github.com/brzpegasus/ember-d3/blob/master/tests/dummy/app/components/simple-circles.js)
 which you can use to really get a feel for how to use the different packages provided by this addon.
 
-## Tree Shaking
+### Global D3
 
-Under the hood we use Rollup to compile all the dependencies for D3, and Rollup supports basic tree-shaking. If you want to avoid loading packages you don't need, you can exclude them in your project's config.
+We don't support the global window.d3 object, as this is viewed as an anti-pattern. However,
+you can expose a bundled import of d3 by enabling the `bundle` config flag:
 
-**Note:** If you exclude a package which
-a dependency of another package, it will be loaded regardless to fulfil that dependency.
+```js
+module.exports = function() {
+	return {
+		'ember-d3': {
+			bundle: true
+		}
+	}
+}
+```
 
-**Note 2:** The global import of `d3` requires all packages, and must be on the exclusion list for this to have any effect.
+This will allow you to do:
+
+```js
+import d3 from 'd3'
+```
+
+_Note: This will disable support for using the dependency whitelist/blacklist._
 
 #### Dependency whitelist/blacklist
 
