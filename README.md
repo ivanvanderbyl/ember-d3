@@ -1,12 +1,12 @@
 # ember-d3 [![Build Status](https://travis-ci.org/ivanvanderbyl/ember-d3.svg?branch=master)](https://travis-ci.org/ivanvanderbyl/ember-d3) [![Ember Observer Score](https://emberobserver.com/badges/ember-d3.svg)](https://emberobserver.com/addons/ember-d3) [![npm version](https://badge.fury.io/js/ember-d3.svg)](https://badge.fury.io/js/ember-d3) [![Dependency Status](https://david-dm.org/brzpegasus/ember-d3.svg)](https://david-dm.org/ivanvanderbyl/ember-d3) [![devDependency Status](https://david-dm.org/ivanvanderbyl/ember-d3/dev-status.svg)](https://david-dm.org/ivanvanderbyl/ember-d3.svg#info=devDependencies)
 
-This addon does one thing: package all the modules within `d3@4.x` into your app or addon, so you can use D3 as you please on its own or as part of a visualisation addon.
+This Ember Addon acts as a loader for consuming [D3.js](https://github.com/mbostock/d3/) within your Ember application or Addon. It works by applying a lightweight AMD transform around the D3 UMD builds which can be consumed by Ember CLI, making it possible to import any individual D3 package or the entire bundle as "d3" from NPM.
 
 ```bash
 ember install ember-d3
 
 # You might also need to add d3 directly to your project:
-yarn add d3@latest
+yarn add d3
 ```
 
 **Requirements:**
