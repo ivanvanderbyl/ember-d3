@@ -23,6 +23,10 @@ npm i -g npm@3
 
 **If you're looking for the `ember-d3` for `d3@3.x`, see the `v3` branch.**
 
+## Loading 3rd Party D3 Plugins
+
+If you want to use 3rd party plugins, like `d3-selection-multi` or `d3-flame-graph`, simply add them to your project and the module loader will automatically detect them, and any other packages beginning with `d3-` in the name.
+
 ## Advanced Installation
 
 You can specify any `d3` version on the v4 release by adding it to your project:
