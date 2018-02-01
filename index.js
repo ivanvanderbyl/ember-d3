@@ -20,7 +20,9 @@ module.exports = {
 		let d3ModuleNames = Object.keys(deps).filter(dep => dep.startsWith('d3'))
 
 		if (d3ModuleNames.indexOf('d3') === -1) {
-			this.ui.writeError('ERROR: Package d3 is not installed, please add it to your dependencies')
+			this.ui.writeError(
+				"ERROR: Package d3 is not installed, please add it to your project's dependencies"
+			)
 			return []
 		} else {
 			d3ModuleNames = [...d3ModuleNames, ...dependenciesForPackage('d3')]
@@ -34,10 +36,17 @@ module.exports = {
 		return paths
 
 		function dependenciesForPackage(depName) {
-			let pkgPath = resolveSync(path.posix.join(depName, 'package.json'))
-			return Object.keys(target.project.require(pkgPath).dependencies).filter(dep =>
-				dep.startsWith('d3-')
-			)
+			try {
+				let pkgPath = resolveSync(path.posix.join(depName, 'package.json'))
+				return Object.keys(target.project.require(pkgPath).dependencies).filter(dep =>
+					dep.startsWith('d3-')
+				)
+			} catch (err) {
+				this.ui.writeError(
+					`ERROR: Package d3 is not installed (required by "${depName}"), please add it to your project's dependencies`
+				)
+				return []
+			}
 		}
 
 		function resolveSync(name, isBrowserTarget) {
@@ -45,9 +54,16 @@ module.exports = {
 			return require('resolve').sync(name, {
 				basedir: target.project.root,
 				packageFilter(pkg, agr2) {
-					if (isBrowserTarget && pkg.hasOwnProperty('unpkg')) {
-						// D3 publishes browser build at `unpkg`
-						pkg.main = pkg.unpkg
+					if (isBrowserTarget) {
+						if (pkg.hasOwnProperty('unpkg')) {
+							// D3 publishes browser build at `unpkg`
+							delete pkg.main
+							pkg.main = pkg.unpkg
+						} else if (pkg.hasOwnProperty('jsdelivr')) {
+							// Some older d3 packages may only contain jsdelivr, which is browser
+							delete pkg.main
+							pkg.main = pkg.jsdelivr
+						}
 					}
 					return pkg
 				}
@@ -92,7 +108,7 @@ module.exports = {
 		let addonConfig = config[this.name] || {}
 		this.d3Modules = this.filterD3Modules(this.allD3Modules(target), addonConfig)
 
-		this.d3Modules.forEach(({ name, basename }) => {
+		this.d3Modules.forEach(({ name, basename, path: modulePath }) => {
 			target.import(path.posix.join('vendor', 'd3', basename), {
 				using: [{ transformation: 'amd', as: name }]
 			})
