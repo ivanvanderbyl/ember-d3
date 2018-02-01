@@ -56,12 +56,12 @@ _See Global D3 section below for configuration_
 import D3 from 'd3'
 ```
 
-We've put together a [complete demo component](https://github.com/brzpegasus/ember-d3/blob/master/tests/dummy/app/components/simple-circles.js)
+We've put together a [complete demo component](https://github.com/ivanvanderbyl/ember-d3/blob/master/tests/dummy/app/components/simple-circles.js)
 which you can use to really get a feel for how to use the different packages provided by this addon.
 
 ### Global D3
 
-We don't support the global window.d3 object, as this is viewed as an anti-pattern. However,
+We don't support the global `window.d3` object, as this is viewed as an anti-pattern. However,
 you can expose a bundled import of d3 by enabling the `bundle` config flag:
 
 ```js
@@ -114,7 +114,7 @@ module.exports = function() {
 ```
 
 **Note**: Even though you only add `d3-scale`, it has a few transitive d3 dependencies.
-These are added to your project automatically.
+**You will need to add these to the whitelist as needed.**
 
 ## Running Tests
 
