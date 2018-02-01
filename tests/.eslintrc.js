@@ -1,8 +1,8 @@
 module.exports = {
-	env: {
-		embertest: true
-	},
-	rules: {
-		'no-var': 'warn'
-	}
+  env: {
+    embertest: true
+  },
+  rules: {
+    'no-var': 'warn'
+  }
 }

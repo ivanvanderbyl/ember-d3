@@ -63,7 +63,7 @@
 		"singleQuote": true,
 		"trailingComma": "none",
 		"printWidth": 100,
-		"useTabs": true,
+		"useTabs": false,
 		"tabWidth": 2,
 		"bracketSpacing": true,
 		"jsxBracketSameLine": true,

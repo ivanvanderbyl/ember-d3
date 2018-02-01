@@ -62,11 +62,11 @@ you can expose a bundled import of d3 by enabling the `bundle` config flag:
 
 ```js
 module.exports = function() {
-	return {
-		'ember-d3': {
-			bundle: true
-		}
-	}
+  return {
+    'ember-d3': {
+      bundle: true
+    }
+  }
 }
 ```
 
@@ -88,11 +88,11 @@ For example, if you only wanted to use `d3-scale`, you would do:
 ```js
 // config/environment.js
 module.exports = function() {
-	return {
-		'ember-d3': {
-			only: ['d3-scale']
-		}
-	}
+  return {
+    'ember-d3': {
+      only: ['d3-scale']
+    }
+  }
 }
 ```
 
@@ -101,11 +101,11 @@ Or if you want to exclude a package:
 ```js
 // config/environment.js
 module.exports = function() {
-	return {
-		'ember-d3': {
-			except: ['d3-scale']
-		}
-	}
+  return {
+    'ember-d3': {
+      except: ['d3-scale']
+    }
+  }
 }
 ```
 
