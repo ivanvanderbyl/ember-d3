@@ -50,6 +50,17 @@ module.exports = {
         }
       }
     },
+
+    {
+      name: 'ember-2.18-d3-5.0.0',
+      npm: {
+        devDependencies: {
+          'ember-source': '~2.18.0',
+          d3: '^5.0.0-rc.2'
+        }
+      }
+    },
+
     {
       name: 'ember-default',
       npm: {
