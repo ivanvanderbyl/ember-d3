@@ -18,9 +18,10 @@ module.exports = {
   allD3Modules(target) {
     let deps = target.dependencies()
     let d3ModuleNames = Object.keys(deps).filter(dep => dep.startsWith('d3'))
+    let ui = this.ui
 
     if (d3ModuleNames.indexOf('d3') === -1) {
-      this.ui.writeError(
+      ui.writeError(
         "ERROR: Package d3 is not installed, please add it to your project's dependencies"
       )
       return []
@@ -42,7 +43,7 @@ module.exports = {
           dep.startsWith('d3-')
         )
       } catch (err) {
-        this.ui.writeError(
+        ui.writeError(
           `ERROR: Package d3 is not installed (required by "${depName}"), please add it to your project's dependencies`
         )
         return []
