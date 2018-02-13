@@ -18,9 +18,10 @@ module.exports = {
   allD3Modules(target) {
     let deps = target.dependencies()
     let d3ModuleNames = Object.keys(deps).filter(dep => dep.startsWith('d3'))
+    let ui = this.ui
 
     if (d3ModuleNames.indexOf('d3') === -1) {
-      this.ui.writeError(
+      ui.writeError(
         "ERROR: Package d3 is not installed, please add it to your project's dependencies"
       )
       return []
@@ -37,12 +38,12 @@ module.exports = {
 
     function dependenciesForPackage(depName) {
       try {
-        let pkgPath = resolveSync(path.posix.join(depName, 'package.json'))
+        let pkgPath = resolveSync(path.join(depName, 'package.json'))
         return Object.keys(target.project.require(pkgPath).dependencies).filter(dep =>
           dep.startsWith('d3-')
         )
       } catch (err) {
-        this.ui.writeError(
+        ui.writeError(
           `ERROR: Package d3 is not installed (required by "${depName}"), please add it to your project's dependencies`
         )
         return []
@@ -113,7 +114,7 @@ module.exports = {
     this.d3Modules = this.filterD3Modules(this.allD3Modules(target), addonConfig)
 
     this.d3Modules.forEach(({ name, basename, path: modulePath }) => {
-      target.import(path.posix.join('vendor', 'd3', basename), {
+      target.import(path.join('vendor', 'd3', basename), {
         using: [{ transformation: 'amd', as: name }]
       })
     })
@@ -126,7 +127,12 @@ module.exports = {
   treeForVendor() {
     let trees = []
 
-    this.d3Modules.forEach(({ name, path: modulePath, basename }) => {
+    let modules = this.d3Modules
+    if (!modules) {
+      return mergeTrees(trees)
+    }
+
+    modules.forEach(({ name, path: modulePath, basename }) => {
       let dir = path.dirname(modulePath)
 
       trees.push(
@@ -173,7 +179,7 @@ function findTargetHost(addon, app) {
 // 	let dirname = path.dirname(modulePath)
 // 	let basename = path.basename(modulePath, 'js')
 // 	let minBasename = `${basename}.min.js`
-// 	let minPath = path.posix.join(dirname, minBasename)
+// 	let minPath = path.join(dirname, minBasename)
 // 	if (existsSync(minPath)) return minPath
 // 	return modulePath
 // }
