@@ -62,6 +62,18 @@ module.exports = {
     },
 
     {
+      name: 'ember-3.0-d3-4.1',
+      npm: {
+        devDependencies: {
+          'ember-source': '~3.0.0'
+        },
+        dependencies: {
+          d3: '^4.1.0'
+        }
+      }
+    },
+
+    {
       name: 'ember-default',
       npm: {
         devDependencies: {}

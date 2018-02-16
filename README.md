@@ -4,9 +4,6 @@ This Ember Addon acts as a loader for consuming [D3.js](https://github.com/mbost
 
 ```bash
 ember install ember-d3
-
-# You might also need to add d3 directly to your project:
-yarn add d3
 ```
 
 **Requirements:**
