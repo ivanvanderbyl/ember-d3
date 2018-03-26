@@ -71,5 +71,9 @@
     "bracketSpacing": true,
     "jsxBracketSameLine": true,
     "arrowParens": "avoid"
+  },
+  "release": {
+    "verifyConditions": ["@semantic-release/npm"],
+    "publish": ["@semantic-release/npm"]
   }
 }
