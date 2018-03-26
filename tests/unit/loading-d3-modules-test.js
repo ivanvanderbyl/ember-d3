@@ -15,9 +15,7 @@ import { interpolateNumber } from 'd3-interpolate'
 import { path } from 'd3-path'
 import { polygonCentroid } from 'd3-polygon'
 import { quadtree } from 'd3-quadtree'
-import { queue } from 'd3-queue'
 import { randomUniform } from 'd3-random'
-import { request } from 'd3-request'
 import { scaleLinear } from 'd3-scale'
 import { select } from 'd3-selection'
 import { line } from 'd3-shape'
@@ -129,32 +127,8 @@ test('loading d3-quadtree', function(assert) {
   ])
 })
 
-test('loading d3-queue', function(assert) {
-  let done = assert.async()
-  assert.expect(2)
-  let t = function(callback) {
-    setTimeout(function() {
-      callback(null, 10)
-    }, 30)
-  }
-
-  queue()
-    .defer(t)
-    .awaitAll(callback)
-
-  function callback(error, results) {
-    assert.equal(null, error)
-    assert.deepEqual(results, [10])
-    done()
-  }
-})
-
 test('loading d3-random', function(assert) {
   assert.equal(randomUniform(6, 10)() > 6, true, 'loaded random')
-})
-
-test('loading d3-request', function(assert) {
-  assert.equal(typeof request, 'function', 'loaded request')
 })
 
 test('loading d3-scale', function(assert) {
