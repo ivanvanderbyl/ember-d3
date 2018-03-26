@@ -151,35 +151,20 @@ module.exports = {
 function findTargetHost(addon, app) {
   let target = app
 
-  if (typeof addon.import === 'function') {
-    target = addon
-  } else {
-    // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
-    // use that.
-    if (typeof addon._findHost === 'function') {
-      target = addon._findHost()
-    }
-
-    // Otherwise, we'll use this implementation borrowed from the _findHost()
-    // method in ember-cli.
-    // Keep iterating upward until we don't have a grandparent.
-    // Has to do this grandparent check because at some point we hit the project.
-    let current = addon
-    do {
-      target = current.app || app
-    } while (current.parent.parent && (current = current.parent))
+  // If the addon has the _findHost() method (in ember-cli >= 2.7.0), we'll just
+  // use that.
+  if (typeof addon._findHost === 'function') {
+    target = addon._findHost()
   }
+
+  // Otherwise, we'll use this implementation borrowed from the _findHost()
+  // method in ember-cli.
+  // Keep iterating upward until we don't have a grandparent.
+  // Has to do this grandparent check because at some point we hit the project.
+  let current = addon
+  do {
+    target = current.app || app
+  } while (current.parent.parent && (current = current.parent))
 
   return target
 }
-
-// function checkForMinBuildFile(modulePath) {
-// 	if(modulePath.endsWith('.min.js')) return modulePath
-
-// 	let dirname = path.dirname(modulePath)
-// 	let basename = path.basename(modulePath, 'js')
-// 	let minBasename = `${basename}.min.js`
-// 	let minPath = path.join(dirname, minBasename)
-// 	if (existsSync(minPath)) return minPath
-// 	return modulePath
-// }
