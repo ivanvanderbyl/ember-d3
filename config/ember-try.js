@@ -52,11 +52,11 @@ module.exports = {
     },
 
     {
-      name: 'ember-2.18-d3-5.0.0',
+      name: 'ember-3.0-d3-5.0.0',
       npm: {
         devDependencies: {
-          'ember-source': '~2.18.0',
-          d3: '^5.0.0-rc.2'
+          'ember-source': '~3.0.0',
+          d3: '^5.0.0'
         }
       }
     },
