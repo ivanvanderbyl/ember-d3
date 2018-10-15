@@ -9,10 +9,6 @@ const UnwatchedDir = require('broccoli-source').UnwatchedDir
 const existsSync = require('exists-sync')
 
 module.exports = {
-  isDevelopingAddon() {
-    return true
-  },
-
   name: 'ember-d3',
 
   allD3Modules(target) {
