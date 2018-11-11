@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/ivanvanderbyl/ember-d3/compare/v0.4.4...v0.5.0) (2018-11-11)
+
+
+### Features
+
+* babel upgrade ([c816a15](https://github.com/ivanvanderbyl/ember-d3/commit/c816a15)), closes [#54](https://github.com/ivanvanderbyl/ember-d3/issues/54) [#62](https://github.com/ivanvanderbyl/ember-d3/issues/62)
+
 # `ember-d3` Changelog
 
 ## v0.4.1 (February 1st, 2018)
