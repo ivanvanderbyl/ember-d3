@@ -1,9 +1,8 @@
----
 language: node_js
 node_js:
   # we recommend testing addons with the same minimum supported node version as Ember CLI
   # so that your addon works for all apps
-  - "9"
+  - '10'
 
 sudo: false
 dist: trusty
@@ -14,21 +13,41 @@ addons:
 cache:
   yarn: true
 
-env:
-  global:
-    # See https://git.io/vdao3 for details.
-    - JOBS=2
-  matrix:
+jobs:
+  fail_fast: true
+  allow_failures:
+    - env: EMBER_TRY_SCENARIO=ember-canary
+
+  include:
+    # runs linting and tests with current locked deps
+
+    - stage: 'Tests'
+      name: 'Tests'
+      install:
+        - yarn install --non-interactive
+      script:
+        - yarn lint:js
+        - yarn test
+
+    - name: 'Floating Dependencies'
+      script:
+        - yarn test
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - EMBER_TRY_SCENARIO=ember-lts-2.16
-    - EMBER_TRY_SCENARIO=ember-2.18-d3-4.1
-    - EMBER_TRY_SCENARIO=ember-2.18-d3-4.7
-    - EMBER_TRY_SCENARIO=ember-2.18-d3-4.4.13
-    - EMBER_TRY_SCENARIO=ember-3.0-d3-5.0.0
-    - EMBER_TRY_SCENARIO=ember-3.0-d3-4.1
-    - EMBER_TRY_SCENARIO=ember-default
-
+    - stage: 'Additional Tests'
+      env: EMBER_TRY_SCENARIO=ember-lts-2.16
+    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.1
+    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.7
+    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.4.13
+    - env: EMBER_TRY_SCENARIO=ember-3.0-d3-5.0.0
+    - env: EMBER_TRY_SCENARIO=ember-3.0-d3-4.1
+    - env: EMBER_TRY_SCENARIO=ember-default
+    - env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-beta
+    - stage: 'Canary Tests'
+      script:
+        - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
+      env: EMBER_TRY_SCENARIO=ember-canary
 matrix:
   fast_finish: true
 
@@ -41,6 +60,4 @@ install:
 
 script:
   - yarn lint:js
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
