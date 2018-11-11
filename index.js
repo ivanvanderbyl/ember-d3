@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 const path = require('path')
+const fs = require('fs')
 const mergeTrees = require('broccoli-merge-trees')
 const Funnel = require('broccoli-funnel')
 const inclusionFilter = require('./lib/inclusion-filter')
@@ -50,7 +51,7 @@ module.exports = {
       if (isBrowserTarget === undefined) isBrowserTarget = false
       return require('resolve').sync(name, {
         basedir: target.project.root,
-        packageFilter(pkg, agr2) {
+        packageFilter(pkg, packageFileDir) {
           if (isBrowserTarget) {
             if (pkg.hasOwnProperty('unpkg')) {
               // D3 publishes browser build at `unpkg`
@@ -64,6 +65,12 @@ module.exports = {
               // Some older d3 packages (d3-request) may only contain browser directive
               pkg.main = undefined
               pkg.main = pkg.browser
+            }
+
+            // if an unminified version exists alongside the minified one, use that instead
+            let unminifiedPath = pkg.main.replace('.min.js', '.js')
+            if (pkg.main.endsWith('.min.js') && fs.existsSync(path.join(packageFileDir, unminifiedPath))) {
+              pkg.main = unminifiedPath
             }
           }
           return pkg
