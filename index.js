@@ -13,8 +13,8 @@ module.exports = {
   name: 'ember-d3',
 
   allD3Modules(target) {
-    let deps = target.dependencies()
-    let d3ModuleNames = Object.keys(deps).filter(dep => dep.startsWith('d3'))
+    let deps = Object.values(target.project.packageInfoCache.entries).map(obj => obj.name || '')
+    let d3ModuleNames = deps.filter(dep => dep.startsWith('d3'))
     let ui = this.ui
 
     if (d3ModuleNames.indexOf('d3') === -1) {
