@@ -1,8 +1,9 @@
+---
 language: node_js
 node_js:
   # we recommend testing addons with the same minimum supported node version as Ember CLI
   # so that your addon works for all apps
-  - '10'
+  - "6"
 
 sudo: false
 dist: trusty
@@ -11,7 +12,19 @@ addons:
   chrome: stable
 
 cache:
-  yarn: true
+  directories:
+    - $HOME/.npm
+
+env:
+  global:
+    # See https://git.io/vdao3 for details.
+    - JOBS=1
+
+branches:
+  only:
+    - master
+    # npm version tags
+    - /^v\d+\.\d+\.\d+/
 
 jobs:
   fail_fast: true
@@ -21,43 +34,27 @@ jobs:
   include:
     # runs linting and tests with current locked deps
 
-    - stage: 'Tests'
-      name: 'Tests'
-      install:
-        - yarn install --non-interactive
+    - stage: "Tests"
+      name: "Tests"
       script:
-        - yarn lint:js
-        - yarn test
+        - npm run lint:hbs
+        - npm run lint:js
+        - npm test
 
-    - name: 'Floating Dependencies'
-      script:
-        - yarn test
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - stage: 'Additional Tests'
-      env: EMBER_TRY_SCENARIO=ember-lts-2.16
-    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.1
-    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.7
-    - env: EMBER_TRY_SCENARIO=ember-2.18-d3-4.4.13
-    - env: EMBER_TRY_SCENARIO=ember-3.0-d3-5.0.0
-    - env: EMBER_TRY_SCENARIO=ember-3.0-d3-4.1
-    - env: EMBER_TRY_SCENARIO=ember-default
+    - stage: "Additional Tests"
+      env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.4
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
-    - stage: 'Canary Tests'
-      script:
-        - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
-      env: EMBER_TRY_SCENARIO=ember-canary
-matrix:
-  fast_finish: true
+    - env: EMBER_TRY_SCENARIO=ember-canary
+    - env: EMBER_TRY_SCENARIO=ember-default-with-jquery
 
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
-
-install:
-  - yarn install --no-lockfile --non-interactive
+  - npm config set spin false
+  - npm install -g npm@4
+  - npm --version
 
 script:
-  - yarn lint:js
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
