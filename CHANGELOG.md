@@ -1,11 +1,21 @@
-# [0.5.0](https://github.com/ivanvanderbyl/ember-d3/compare/v0.4.4...v0.5.0) (2018-11-11)
+# `ember-d3` Changelog
 
+# [0.5.1](https://github.com/ivanvanderbyl/ember-d3/compare/v0.5.0...v0.5.1) (2019-01-18)
+
+### Pull Requests
+
+* [#69](https://github.com/ivanvanderbyl/ember-d3/pull/24) Look more broadly for included D3 packages _by [jrjohnson](https://github.com/jrjohnson)_
+
+### Other changes
+
+* Upgrades Ember + Ember CLI using ember-cli-update. Upgrades Babel from 6 to 7.
+
+# [0.5.0](https://github.com/ivanvanderbyl/ember-d3/compare/v0.4.4...v0.5.0) (2018-11-11)
 
 ### Features
 
 * babel upgrade ([c816a15](https://github.com/ivanvanderbyl/ember-d3/commit/c816a15)), closes [#54](https://github.com/ivanvanderbyl/ember-d3/issues/54) [#62](https://github.com/ivanvanderbyl/ember-d3/issues/62)
 
-# `ember-d3` Changelog
 
 ## v0.4.1 (February 1st, 2018)
 
@@ -15,7 +25,7 @@
 
 ### Pull Requests
 
-* [#24](https://github.com/ivanvanderbyl/ember-d3/pull/24) Expose library version to ember _by [brzpegasus/feature](https://github.com/brzpegasus/feature)_
+* [#24](https://github.com/ivanvanderbyl/ember-d3/pull/24) Expose library version to ember _by [brzpegasus](https://github.com/brzpegasus)_
 * [#2](https://github.com/ivanvanderbyl/ember-d3/pull/2) Update ember-cli _by [Mike North](https://github.com/mike-north)_
 * [#6](https://github.com/ivanvanderbyl/ember-d3/pull/6) Fix loading in engines _by [Cropster](https://github.com/Cropster)_
 * [#8](https://github.com/ivanvanderbyl/ember-d3/pull/8) Added support for loading D3 v4 _by [Ivan Vanderbyl](https://github.com/ivanvanderbyl)_
