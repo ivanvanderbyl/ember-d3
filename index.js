@@ -112,9 +112,9 @@ module.exports = {
     let target = findTargetHost(this, app)
 
     // 2. Load app config for our addon
-    let config = app.project.config(app.env) || {}
-    let addonConfig = config[this.name] || {}
-    this.d3Modules = this.filterD3Modules(this.allD3Modules(target), addonConfig)
+    let addonOptions = (this.parent && this.parent.options) || (this.app && this.app.options) || {};
+    let addonConfig = addonOptions[this.name] || {};
+    this.d3Modules = this.filterD3Modules(this.allD3Modules(target), addonConfig);
 
     this.d3Modules.forEach(({ name, basename, path: modulePath }) => {
       target.import(path.join('vendor', 'd3', basename), {

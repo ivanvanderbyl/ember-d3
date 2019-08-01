@@ -62,13 +62,13 @@ We don't support the global `window.d3` object, as this is viewed as an anti-pat
 you can expose a bundled import of d3 by enabling the `bundle` config flag:
 
 ```js
-module.exports = function() {
-  return {
+module.exports = function(defaults) {
+  var app = new EmberApp(defaults, {
     'ember-d3': {
       bundle: true
     }
-  }
-}
+  });
+};
 ```
 
 This will allow you to do:
@@ -87,27 +87,27 @@ the packages that you want to include in your project's `config/environment.js` 
 For example, if you only wanted to use `d3-scale`, you would do:
 
 ```js
-// config/environment.js
-module.exports = function() {
-  return {
+// ember-cli-build.js
+module.exports = function(defaults) {
+  var app = new EmberApp(defaults, {
     'ember-d3': {
       only: ['d3-scale']
     }
-  }
-}
+  });
+};
 ```
 
 Or if you want to exclude a package:
 
 ```js
-// config/environment.js
-module.exports = function() {
-  return {
+// ember-cli-build.js
+module.exports = function(defaults) {
+  var app = new EmberApp(defaults, {
     'ember-d3': {
       except: ['d3-scale']
     }
-  }
-}
+  });
+};
 ```
 
 **Note**: Even though you only add `d3-scale`, it has a few transitive d3 dependencies.
