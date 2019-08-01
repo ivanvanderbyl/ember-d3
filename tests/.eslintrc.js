@@ -1,8 +1,9 @@
+/* eslint-env node */
 module.exports = {
   env: {
-    'embertest': true
+    embertest: true
   },
   rules: {
-    'no-var':'warn'
+    'no-var': 'warn'
   }
-};
+}
