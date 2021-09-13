@@ -7,7 +7,6 @@ const Funnel = require('broccoli-funnel')
 const inclusionFilter = require('./lib/inclusion-filter')
 const exclusionFilter = require('./lib/exclusion-filter')
 const UnwatchedDir = require('broccoli-source').UnwatchedDir
-const existsSync = require('exists-sync')
 
 module.exports = {
   name: 'ember-d3',
