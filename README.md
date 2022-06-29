@@ -1,3 +1,5 @@
+> Looking for a new maintainer. Please open an issue if you would like to take this on.
+
 # ember-d3 [![Build Status](https://travis-ci.org/ivanvanderbyl/ember-d3.svg?branch=master)](https://travis-ci.org/ivanvanderbyl/ember-d3) [![Ember Observer Score](https://emberobserver.com/badges/ember-d3.svg)](https://emberobserver.com/addons/ember-d3) [![npm version](https://badge.fury.io/js/ember-d3.svg)](https://badge.fury.io/js/ember-d3) [![Dependency Status](https://david-dm.org/brzpegasus/ember-d3.svg)](https://david-dm.org/ivanvanderbyl/ember-d3) [![devDependency Status](https://david-dm.org/ivanvanderbyl/ember-d3/dev-status.svg)](https://david-dm.org/ivanvanderbyl/ember-d3.svg#info=devDependencies)
 
 This Ember Addon acts as a loader for consuming [D3.js](https://github.com/mbostock/d3/) within your Ember application or Addon. It works by applying a lightweight AMD transform around the D3 UMD builds which can be consumed by Ember CLI, making it possible to import any individual D3 package or the entire bundle as "d3" from NPM.
